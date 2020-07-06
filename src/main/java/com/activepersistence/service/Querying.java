@@ -1,11 +1,13 @@
 package com.activepersistence.service;
 
 import com.activepersistence.service.relation.QueryMethods.ValidUnscopingValues;
+
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
+import java.util.Optional;
 
 public interface Querying<T> {
 
@@ -82,7 +84,7 @@ public interface Querying<T> {
         return all().take();
     }
 
-    public default T takeOrFail() {
+    public default Optional<T> takeOrFail() {
         return all().takeOrFail();
     }
 
@@ -90,7 +92,7 @@ public interface Querying<T> {
         return all().first();
     }
 
-    public default T firstOrFail() {
+    public default Optional<T> firstOrFail() {
         return all().firstOrFail();
     }
 
@@ -98,7 +100,7 @@ public interface Querying<T> {
         return all().last();
     }
 
-    public default T lastOrFail() {
+    public default Optional<T> lastOrFail() {
         return all().lastOrFail();
     }
 
@@ -126,7 +128,7 @@ public interface Querying<T> {
         return all().findBy(conditions);
     }
 
-    public default T findByOrFail(String conditions) {
+    public default Optional<T> findByOrFail(String conditions) {
         return all().findByOrFail(conditions);
     }
 
@@ -259,7 +261,7 @@ public interface Querying<T> {
     }
     //</editor-fold>
 
-    //<editor-fold defaultstate="collapsed" desc="Quering">
+    //<editor-fold defaultstate="collapsed" desc="Querying">
     public default List<T> findBySql(String sql) {
         return findBySql(sql, new HashMap());
     }

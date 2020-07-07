@@ -2,6 +2,7 @@ package com.activepersistence.service.relation;
 
 import com.activepersistence.service.Relation;
 import java.util.List;
+import java.util.Optional;
 
 public interface FinderMethods<T> {
 
@@ -13,7 +14,7 @@ public interface FinderMethods<T> {
         return thiz().limit(1).fetchOne();
     }
 
-    public default T takeOrFail() {
+    public default Optional<T> takeOrFail() {
         return thiz().limit(1).fetchOneOrFail();
     }
 
@@ -25,7 +26,7 @@ public interface FinderMethods<T> {
         return thiz().order(getPrimaryKey()).take();
     }
 
-    public default T firstOrFail() {
+    public default Optional<T> firstOrFail() {
         return thiz().order(getPrimaryKey()).takeOrFail();
     }
 
@@ -37,7 +38,7 @@ public interface FinderMethods<T> {
         return thiz().order(getPrimaryKey() + " DESC").take();
     }
 
-    public default T lastOrFail() {
+    public default Optional<T> lastOrFail() {
         return thiz().order(getPrimaryKey() + " DESC").takeOrFail();
     }
 
@@ -45,7 +46,7 @@ public interface FinderMethods<T> {
         return thiz().order(getPrimaryKey() + " DESC").take(limit);
     }
 
-    public default T find(Object id) {
+    public default Optional<T> find(Object id) {
         return thiz().where(getPrimaryKey() + " = :_id").bind("_id", id).takeOrFail();
     }
 
@@ -57,7 +58,7 @@ public interface FinderMethods<T> {
         return thiz().where(conditions).take();
     }
 
-    public default T findByOrFail(String conditions, Object... params) {
+    public default Optional<T> findByOrFail(String conditions, Object... params) {
         return thiz().where(conditions).takeOrFail();
     }
 

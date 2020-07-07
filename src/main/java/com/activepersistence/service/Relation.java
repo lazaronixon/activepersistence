@@ -5,21 +5,16 @@ import com.activepersistence.service.arel.DeleteManager;
 import com.activepersistence.service.arel.Entity;
 import com.activepersistence.service.arel.SelectManager;
 import com.activepersistence.service.arel.UpdateManager;
-import com.activepersistence.service.relation.Calculation;
-import com.activepersistence.service.relation.FinderMethods;
-import com.activepersistence.service.relation.QueryMethods;
-import com.activepersistence.service.relation.Scoping;
-import com.activepersistence.service.relation.SpawnMethods;
-import com.activepersistence.service.relation.Values;
+import com.activepersistence.service.relation.*;
+
+import javax.persistence.*;
 import java.util.List;
+import java.util.Optional;
+
 import static java.util.Optional.ofNullable;
 import static java.util.stream.Collectors.toList;
-import javax.persistence.EntityManager;
-import javax.persistence.LockModeType;
 import static javax.persistence.LockModeType.NONE;
 import static javax.persistence.LockModeType.PESSIMISTIC_READ;
-import javax.persistence.Query;
-import javax.persistence.TypedQuery;
 
 public class Relation<T> implements FinderMethods<T>, QueryMethods<T>, Calculation<T>, SpawnMethods<T>, Scoping<T> {
 
@@ -57,8 +52,8 @@ public class Relation<T> implements FinderMethods<T>, QueryMethods<T>, Calculati
         return buildQuery(toJpql()).getResultStream().findFirst().orElse(null);
     }
 
-    public T fetchOneOrFail() {
-        return buildQuery(toJpql()).getSingleResult();
+    public Optional<T> fetchOneOrFail() {
+        return optionalSingleResult(buildQuery(toJpql()));
     }
 
     public List<T> fetch() {
@@ -269,6 +264,14 @@ public class Relation<T> implements FinderMethods<T>, QueryMethods<T>, Calculati
                 && values.getGroupValues().isEmpty()
                 && values.getHavingValues().isEmpty()
                 && values.getJoinsValues().isEmpty();
+    }
+
+    private Optional<T> optionalSingleResult(TypedQuery<T> typedQuery) {
+        try {
+            return Optional.of(typedQuery.getSingleResult());
+        } catch (NoResultException nre) {
+            return Optional.empty();
+        }
     }
 
 }

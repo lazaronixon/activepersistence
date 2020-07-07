@@ -150,13 +150,13 @@ public class QueryMethodsTest extends IntegrationTest {
 
     @Test
     public void testOrdinalBindWithModel() {
-        Post postOne = postsService.find(1);
+        Post postOne = postsService.find(1).get();
         assertNotNull(postsService.where("this.id = ?1").bind(1, postOne));
     }
 
     @Test
     public void testPlaceholderBindWithModel() {
-        Post postOne = postsService.find(1);
+        Post postOne = postsService.find(1).get();
         assertNotNull(postsService.where("this.id = :id").bind("id", postOne));
     }
 

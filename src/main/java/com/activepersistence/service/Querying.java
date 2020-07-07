@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import static java.util.Optional.ofNullable;
+
 public interface Querying<T> {
 
     public EntityManager getEntityManager();
@@ -116,7 +118,7 @@ public interface Querying<T> {
         return all().last(limit);
     }
 
-    public default T find(Object id) {
+    public default Optional<T> find(Object id) {
         return all().find(id);
     }
 

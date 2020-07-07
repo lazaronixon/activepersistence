@@ -28,7 +28,7 @@ public class FinderMethodsTest extends IntegrationTest {
 
     @Test
     public void testTakeOrFail() {
-        assertThrows(NoResultException.class, postsService.where("1=0")::takeOrFail);
+        assertFalse(postsService.where("1=0").takeOrFail().isPresent());
     }
 
     @Test
@@ -53,12 +53,12 @@ public class FinderMethodsTest extends IntegrationTest {
 
     @Test
     public void testLastOrFail() {
-        assertThrows(NoResultException.class, postsService.where("1=0")::lastOrFail);
+        assertFalse(postsService.where("1=0").lastOrFail().isPresent());
     }
 
     @Test
     public void testFind() {
-        assertEquals((Integer) 2, postsService.find(2).getId());
+        assertEquals((Integer) 2, postsService.find(2).get().getId());
     }
 
     @Test

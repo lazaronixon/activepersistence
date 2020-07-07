@@ -88,7 +88,7 @@ public class RelationTest extends IntegrationTest {
     @Test
     public void testUpdateAll() {
         assertEquals(3, postsService.where("this.id IN (1,2,3)").updateAll("this.title = 'testing'"));
-        assertEquals("testing", postsService.find(1).getTitle());
+        assertEquals("testing", postsService.find(1).get().getTitle());
     }
 
     @Test
